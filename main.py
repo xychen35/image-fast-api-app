@@ -5,12 +5,12 @@ from typing import List
 import numpy as np
 import cv2
 from PIL import Image
-import tflite_runtime.interpreter as tflite
+import tensorflow as tf
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-model = tflite.Interpreter("static/model/model.tflite")
+model = tf.lite.Interpreter("static/model/model.tflite")
 model.allocate_tensors()
 
 input_details = model.get_input_details()
@@ -79,7 +79,7 @@ async def create_upload_files(files: List[UploadFile] = File(...)):
     table_html = get_html_table(image_paths, class_predictions, column_labels)
 
     content = head_html + """
-    <marquee width="525" behavior="alternate"><h1 style="color:red;font-family:Arial">Here's Our Predictions!</h1></marquee>
+    <marquee width="525" behavior="alternate"><h1 style="color:green;font-family:Arial">Here's Predictions!</h1></marquee>
     """ + table_html + '''<br><form method="post" action="/">
     <button type="submit">Home</button>
     </form>'''
