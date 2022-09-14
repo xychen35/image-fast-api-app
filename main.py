@@ -61,6 +61,7 @@ async def create_upload_files(files: List[UploadFile] = File(...)):
     images_rgb = [cv2.cvtColor(img, cv2.COLOR_BGR2RGB) for img in images_resized]
 
     names = [file.filename for file in files]
+    names = [name.replace('png', 'jpg') for name in names]
 
     for image, name in zip(images_rgb, names):
         pillow_image = Image.fromarray(image)
@@ -79,7 +80,7 @@ async def create_upload_files(files: List[UploadFile] = File(...)):
     table_html = get_html_table(image_paths, class_predictions, column_labels)
 
     content = head_html + """
-    <marquee width="525" behavior="alternate"><h1 style="color:green;font-family:Arial">Here's Predictions!</h1></marquee>
+    <width="525" behavior="alternate"><h1 style="color:green;font-family:Arial">Here's Predictions!</h1></width=>
     """ + table_html + '''<br><form method="post" action="/">
     <button type="submit">Home</button>
     </form>'''
@@ -90,7 +91,7 @@ async def create_upload_files(files: List[UploadFile] = File(...)):
 @app.get('/', response_class=HTMLResponse)
 async def main():
     content = head_html + """
-    <marquee width="525" behavior="alternate"><h1 style="color:green;font-family:Arial">Please Upload Your Scenes!</h1></marquee>
+    <width="525" behavior="alternate"><h1 style="color:green;font-family:Arial">Please Upload Your Scenes!</h1></width=>
     <h3 style="font-family:Arial">I'll Try to Predict Which of These Categories They Are:</h3><br>
     """
     paths = ['building.jpg', 'forest.jpg', 'glacier.jpg', 'mountain.jpg', 'sea.jpg', 'street.jpg']
